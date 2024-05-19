@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information flow visualisation</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1>Visualisation of information flow with different schedules</h1>
+
+    <p>The below visualisations all show the amount of entropy in variables of the factor graph where the y-axis represents the state of ChaCha and the x-axis the number of operations through ChaCha (not every operation affects the whole state so each variable can occupy multiple pixels).</p>
+    
+    <p>They are run at differing frame rates to show the difference in speed at which round are completed.</p>
+
+    <p>They are all from the same trace of the actual attack against an 8-bit implementation on a 32-bit microcontroller and are using 2 bit clusters in the factor graph.</p>
+
+    <h2>Known output, counter and nonce</h2>
+
+    <table>
+        <tr>
+            <th>Simple schedule</th>
+            <th>Forwards backwards</th>
+            <th>End rounds</th>
+        </tr>
+        <tr>
+            <td><img src="figures/real_8bit_2_clusters_known_all.gif"></td>
+            <td><img src="figures/real_8bit_2_clusters_known_forwards_backwards.gif"></td>
+            <td><img src="figures/real_8bit_2_clusters_known_ends.gif"></td>
+        </tr>
+    </table>
+
+    In the above cases it can be seen that information is flowing from the ends of the algorithm into the centre which the end rounds schedule makes good use of while allowing for much faster iteration.  The simple schedule and forwards backwards work very similarly to each other although forwards backwards does perform slightly better with push forwards or backwards known information in the factor graph.
+
+    <h2>Unknown output, counter and nonce</h2>
+    <table>
+        <tr>
+            <th>Simple schedule</th>
+            <th>Forwards backwards</th>
+            <th>End rounds</th>
+        </tr>
+        <tr>
+            <td><img src="figures/real_8bit_2_clusters_all.gif"></td>
+            <td><img src="figures/real_8bit_2_clusters_forwards_backwards.gif"></td>
+            <td><img src="figures/real_8bit_2_clusters_ends.gif"></td>
+        </tr>
+    </table>
+
+    In this case it can be seen that their is a lot higher number of iterations before the correct state is able to be figured out and that the information is flowing from the middle of the algorithm outwards, which the end rounds schedule does not take advantage of.  It can also be seen that the simple schedule is able to find the solution significantly quicker than forwards backwards although they do both find the correct solution.
+</body>
+</html>
